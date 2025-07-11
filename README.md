@@ -14,7 +14,7 @@ This project is a technical assessment. The goal was to create a `/weather` page
 
 ![Weather Block](image.png)
 
-- To be able to use it I have added the new block inside the Page model Body (inside the Validations). That allowed me to use it inside the created [/weather](https://weather-assignment.pages.dev/en/weather/) page and retrieve on the frontent the coordinates needed to retrieve on the frontend.
+- To be able to use it I have added the new block inside the Page model Body (inside the Validations). That allowed me to use it inside the created [/weather](https://weather-assignment.pages.dev/en/weather/) page and retrieve on the front-end the coordinates needed to get the weather data.
 
 ![Page Model Body Blocks](image-1.png)
 
