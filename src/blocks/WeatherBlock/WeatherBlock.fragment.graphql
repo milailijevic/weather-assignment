@@ -1,0 +1,6 @@
+fragment WeatherBlock on WeatherBlockRecord {
+  geolocation {
+    latitude
+    longitude
+  }
+}

@@ -1,0 +1,85 @@
+---
+interface Props {
+  query: string;
+}
+
+const { query } = Astro.props;
+---
+<section class="weather-block">
+  <p>User selected location:</p>
+  <div id="weather-results" data-query={query}></div>
+</section>
+
+<script type="module">
+  (async () => {
+    const results = document.getElementById('weather-results');
+    if (!results) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+    const lat = urlParams.get('lat');
+    const lon = urlParams.get('lon');
+
+    try {
+      let displayName = '';
+      let finalLat = '';
+      let finalLon = '';
+
+      if (lat && lon) {
+        // ✅ Use lat/lon directly (skip Nominatim)
+        finalLat = lat;
+        finalLon = lon;
+        displayName = `Lat: ${lat}, Lon: ${lon}`;
+      } else if (query) {
+        // 🧭 Use Nominatim if only query is present
+        const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
+        const geoData = await geoRes.json();
+
+        if (!geoData.length) {
+          results.innerHTML = '<p>City not found :(</p>';
+          return;
+        }
+
+        finalLat = geoData[0].lat;
+        finalLon = geoData[0].lon;
+        displayName = geoData[0].display_name;
+      } else {
+        results.innerHTML = '<p>No location data provided.</p>';
+        return;
+      }
+
+      // 🌤 Fetch weather from Open-Meteo
+      const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${finalLat}&longitude=${finalLon}&current_weather=true`);
+      const weatherData = await weatherRes.json();
+
+      if (!weatherData.current_weather) {
+        results.innerHTML = '<p>No weather data available.</p>';
+        return;
+      }
+
+      const weather = weatherData.current_weather;
+
+      results.innerHTML = `
+        <p><strong>${displayName}</strong></p>
+        <p>Current temperature: ${weather.temperature} C</p>
+      `;
+    } catch (err) {
+      console.error('Error in weather script:', err);
+      results.innerHTML = '<p>Something went wrong fetching weather.</p>';
+    }
+  })();
+</script>
+
+
+<style>
+.weather-block {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  max-width: 400px;
+}
+
+input {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+</style>

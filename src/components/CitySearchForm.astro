@@ -1,0 +1,29 @@
+---
+import { minQueryLength, getSearchPathname, queryParamName } from '@lib/searchCity';
+
+interface Props {
+  query: string;
+}
+
+const { query } = Astro.props;
+---
+
+<form method="GET" action={ getSearchPathname() } role="search">
+  <input
+    type="search"
+    name={ queryParamName }
+    value={ query }
+    placeholder="Enter a city name"
+    minlength={ minQueryLength }
+    required
+  />
+  <button type="submit">Check the weather</button>
+</form>
+
+
+<style>
+input, button {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+</style>

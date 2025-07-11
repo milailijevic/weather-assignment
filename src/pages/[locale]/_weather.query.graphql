@@ -1,4 +1,3 @@
-#import '@lib/routing/PageRoute.fragment.graphql'
 #import '@blocks/ActionBlock/ActionBlock.fragment.graphql'
 #import '@blocks/EmbedBlock/EmbedBlock.fragment.graphql'
 #import '@blocks/ImageBlock/ImageBlock.fragment.graphql'
@@ -9,11 +8,10 @@
 #import '@blocks/VideoBlock/VideoBlock.fragment.graphql'
 #import '@blocks/VideoEmbedBlock/VideoEmbedBlock.fragment.graphql'
 #import '@blocks/GroupingBlock/GroupingBlock.fragment.graphql'
-#import '@blocks/WeatherBlock/WeatherBlock.fragment.graphql'
 
-query Page($locale: SiteLocale!, $slug: String!) {
-  page(locale: $locale, filter: { slug: { eq: $slug } }) {
-    ...PageRoute
+query HomePage($locale: SiteLocale!) {
+  page: homePage(locale: $locale) {
+    title
     _seoMetaTags {
       attributes
       content
@@ -50,9 +48,6 @@ query Page($locale: SiteLocale!, $slug: String!) {
       }
       ... on GroupingBlockRecord {
         ...GroupingBlock
-      }
-	  ... on WeatherBlockRecord {
-        ...WeatherBlock
       }
     }
   }

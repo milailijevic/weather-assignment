@@ -1,0 +1,18 @@
+---
+import CitySearchForm from '@components/CitySearchForm.astro';
+import Link from '@components/Link/Link.astro';
+
+const { block } = Astro.props;
+const { latitude, longitude } = block.geolocation;
+const link = `/en/weather-data?lat=${latitude}&lon=${longitude}`;
+---
+
+<section class="weather-block">
+  <p>DatoCMS preselected geolocation data from the WeatherBlock:</p>
+  <p>Lat:{latitude}</p>
+  <p>Lon:{longitude}</p>
+  <Link href={link}> Check the weather </Link>
+  <hr />
+  <p>Or enter the city name to check the weather</p>
+  <CitySearchForm query="" />
+</section>

@@ -1,0 +1,12 @@
+---
+
+import { queryParamName } from '@lib/searchCity';
+import WeatherResults from '@components/WeatherResults.astro';
+
+const query = new URL(Astro.request.url).searchParams.get(queryParamName) || '';
+
+---
+<h1>Weather</h1>
+<section>
+  <WeatherResults query={query} />
+</section>
