@@ -6,7 +6,7 @@ interface Props {
 const { query } = Astro.props;
 ---
 <section class="weather-block">
-  <p>User selected location:</p>
+  <p>Weather data:</p>
   <div id="weather-results" data-query={query}></div>
 </section>
 
@@ -26,12 +26,13 @@ const { query } = Astro.props;
       let finalLon = '';
 
       if (lat && lon) {
-        // ✅ Use lat/lon directly (skip Nominatim)
+        // Use lat/lon directly (skip Nominatim)
         finalLat = lat;
         finalLon = lon;
         displayName = `Lat: ${lat}, Lon: ${lon}`;
       } else if (query) {
-        // 🧭 Use Nominatim if only query is present
+
+        //  Use Nominatim if only query is present
         const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
         const geoData = await geoRes.json();
 
@@ -48,7 +49,7 @@ const { query } = Astro.props;
         return;
       }
 
-      // 🌤 Fetch weather from Open-Meteo
+      // Fetch weather from Open-Meteo
       const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${finalLat}&longitude=${finalLon}&current_weather=true`);
       const weatherData = await weatherRes.json();
 
@@ -61,7 +62,7 @@ const { query } = Astro.props;
 
       results.innerHTML = `
         <p><strong>${displayName}</strong></p>
-        <p>Current temperature: ${weather.temperature} C</p>
+        <p>Current temperature: ${weather.temperature} °C</p>
       `;
     } catch (err) {
       console.error('Error in weather script:', err);
@@ -76,10 +77,5 @@ const { query } = Astro.props;
   border: 1px solid #ccc;
   padding: 1rem;
   max-width: 400px;
-}
-
-input {
-  padding: 0.5rem;
-  margin-right: 0.5rem;
 }
 </style>
